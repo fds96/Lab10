@@ -1,16 +1,20 @@
 package it.polito.tdp.porto.model;
 
+import java.util.*;
+
 public class Author {
 
 	private int id;
 	private String lastname;
 	private String firstname;
+	private Map<Integer,Paper> papers;
 		
 	public Author(int id, String lastname, String firstname) {
 		super();
 		this.id = id;
 		this.lastname = lastname;
 		this.firstname = firstname;
+		this.papers = new HashMap<>();
 	}
 
 	public int getId() {
@@ -40,6 +44,19 @@ public class Author {
 
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
+	}
+	
+	public List<Paper> getPapers() {
+		return new ArrayList<>(papers.values());
+	}
+
+	public void setPapers(List<Paper> papers) {
+		for(Paper p : papers)
+			this.papers.put(p.getEprintid(), p);
+	}
+	
+	public void addPaper(Paper paper) {
+		papers.put(paper.getEprintid(), paper);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package it.polito.tdp.porto.model;
 
+import java.util.*;
+
 public class Paper {
 
 	private int eprintid;
@@ -8,6 +10,7 @@ public class Paper {
 	private String publication;
 	private String type;
 	private String types;
+	private Map<Integer,Author> authors;
 
 	public Paper(int eprintid, String title, String issn, String publication, String type, String types) {
 		this.eprintid = eprintid;
@@ -16,6 +19,7 @@ public class Paper {
 		this.publication = publication;
 		this.type = type;
 		this.types = types;
+		this.authors = new HashMap<>();
 	}
 
 	public int getEprintid() {
@@ -65,10 +69,19 @@ public class Paper {
 	public void setTypes(String types) {
 		this.types = types;
 	}
+	
+	public List<Author> getAuthors() {
+		return new ArrayList<>(authors.values());
+	}
+
+	public void setAuthors(List<Author> authors) {
+		for(Author a : authors)
+			this.authors.put(a.getId(), a);
+	}
 
 	@Override
 	public String toString() {
-		return "Paper [eprintid=" + eprintid + ", title=" + title + ", issn=" + issn + ", publication=" + publication
+		return "Paper [eprintid=" + eprintid +  ", title=" + title + ", issn=" + issn + ", publication=" + publication
 				+ ", type=" + type + ", types=" + types + "]";
 	}
 
@@ -92,6 +105,10 @@ public class Paper {
 		if (eprintid != other.eprintid)
 			return false;
 		return true;
+	}
+
+	public void addAuthor(Author author) {
+		authors.put(author.getId(), author);
 	}
 	
 	

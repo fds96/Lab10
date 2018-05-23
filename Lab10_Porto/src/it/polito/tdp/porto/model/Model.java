@@ -41,6 +41,24 @@ public class Model {
 		this.initialize();
 	}
 
+	public List<Paper> getPapers() {
+		return papers;
+	}
+
+	public void setPapers(List<Paper> papers) {
+		this.papers = papers;
+	}
+
+	public List<Author> getAuthors() {
+		List<Author> result = new LinkedList<>(this.authors);
+		Collections.sort(result);
+		return result;
+	}
+
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
+	}
+
 	private void initialize() {
 		Graphs.addAllVertices(this.graph, authors);
 		
@@ -61,41 +79,35 @@ public class Model {
 		//System.out.println(graph.vertexSet().size() +  " " + graph.edgeSet().size());
 	}
 	
+	public List<Author> trovaCoAutori(Author author){
+		List<Author> result = new LinkedList<>(Graphs.neighborListOf(this.graph, author));
+		Collections.sort(result);
+		return result;
+	}
+	
+	public List<Author> trovaAutoriCorrelati(Author author){
+		List<Author> result = new LinkedList<>(authors);
+		result.removeAll(this.trovaCoAutori(author));
+		result.remove(author);
+		Collections.sort(result);
+		return result;
+	}
+	
 	public void findConnectedSet() {
-		
 		ConnectivityInspector<Author,DefaultEdge> ci = new ConnectivityInspector<>(graph);
 		for(Set<Author> s : ci.connectedSets())
 			System.out.println(s);
 	}
 	
-//public Set<Airport> getBiggestSCC() {
-//		
-//		ConnectivityInspector<Airport, DefaultWeightedEdge> ci = new ConnectivityInspector(grafo);
-//		
-//		Set<Airport> bestSet = null;
-//		int bestSize = 0;
-//		
-//		for (Set<Airport> s : ci.connectedSets()) {
-//			if (s.size() > bestSize) {
-//				bestSet = new HashSet<Airport>(s);
-//				bestSize = s.size();
-//			}	
-//		}
-//		
-//		return bestSet;
-//}
 	
 	private List<Author> getShorestPath(Author autore1,Author autore2){
-		
-		
 		DijkstraShortestPath<Author,DefaultEdge> spa = new DijkstraShortestPath<Author,DefaultEdge>(this.graph);
-		
 		return new ArrayList<>(spa.getPath(autore1, autore2).getVertexList());
 	}
 	
-	public List<Paper> papersShortestPath(int id1, int id2){
-		Author autore1 = authorIdMap.get(id1);
-		Author autore2 = authorIdMap.get(id2);
+	public List<Paper> papersShortestPath(Author author1, Author author2){
+		Author autore1 = authorIdMap.get(author1);
+		Author autore2 = authorIdMap.get(author2);
 		
 		if(autore1 == null || autore2 == null) {
 			return null;

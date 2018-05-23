@@ -5,8 +5,8 @@ public class TestModel {
 	public static void main(String[] args) {
 		
 		Model model = new Model();
-		model.findConnectedSet();
-		System.out.println(model.papersShortestPath(20500, 4287));
+		//model.findConnectedSet();
+		//System.out.println(model.papersShortestPath(27355, 2185));
 	}
 
 }
